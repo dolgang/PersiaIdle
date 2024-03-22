@@ -24,6 +24,14 @@ public class UIGrowthPanel : UIPanel
     [SerializeField] private GameObject[] awakenUis;
     [SerializeField] private RectTransform awakenRoot;
 
+
+    // 어빌리티 => 재화를 소모하여 랜덤으로 옵션을 뽑아 올리는 능력치
+    [Header("어빌리티")] [SerializeField] private UIAbilityBar abilityBarPrefab;
+    private CustomPool<UIAbilityBar> abilityPool;
+    [SerializeField] private int abilityPoolSize;
+    [SerializeField] private GameObject[] abilityUis;
+    [SerializeField] private RectTransform abilityRoot;
+
     // 미정
     // [SerializeField] private 미정 무언가Prefab;
     // private ObjectPool<미정> 무언가Pool;
@@ -57,6 +65,11 @@ public class UIGrowthPanel : UIPanel
             x => x.actOnCallback += () => awakenPool.Release(x),
             x => x.transform.SetAsLastSibling(),
             null, awakenPoolSize, true);
+
+        abilityPool = EasyUIPooling.MakePool(abilityBarPrefab, abilityRoot,
+            x => x.actOnCallback += () => abilityPool.Release(x),
+            x => x.transform.SetAsLastSibling(),
+            null, abilityPoolSize, true);
 
         currencyUI.InitUI(this);
         return this;
@@ -150,17 +163,44 @@ public class UIGrowthPanel : UIPanel
 
                 ControlUICurrency(ECurrencyType.AwakenStone);
                 break;
-            // case ETrainingType.Speciality:
-            //     foreach (var ui in specialityUis)
-            //     {
-            //         ui.SetActive(true);
-            //     }
-            //     foreach (var item in UpgradeManager.instance.specialityUpgradeInfo)
-            //     {
-            //         var obj = specialityPool.Get();
-            //         obj.ShowUI(item);
-            //     }
-            //     break;
+
+            case ETrainingType.Ability:
+                foreach (var ui in abilityUis)
+                {
+                    ui.SetActive(true);
+                }
+
+                foreach (var item in UpgradeManager.instance.awakenUpgradeInfo)
+                {
+                    var obj = awakenPool.Get();
+                    obj.ShowUI(item);
+                    if (item.statusType == EStatusType.ATK)
+                        awakenAttackQuestRoot = obj.GetButtonRect();
+                    else if (item.statusType == EStatusType.DMG_REDU)
+                        awakenDamageReductionQuestRoot = obj.GetButtonRect();
+                    else if (item.statusType == EStatusType.CRIT_CH)
+                        awakenCriticalChanceQuestRoot = obj.GetButtonRect();
+                    else if (item.statusType == EStatusType.CRIT_DMG)
+                        awakenCriticalDamageQuestRoot = obj.GetButtonRect();
+                    else if (item.statusType == EStatusType.ATK_SPD)
+                        awakenAttackSpeedQuestRoot = obj.GetButtonRect();
+                    else if (item.statusType == EStatusType.SKILL_DMG)
+                        awakenSkillMultiplierQuestRoot = obj.GetButtonRect();
+                }
+
+                ControlUICurrency(ECurrencyType.Gold);
+                break;
+                // case ETrainingType.Speciality:
+                //     foreach (var ui in specialityUis)
+                //     {
+                //         ui.SetActive(true);
+                //     }
+                //     foreach (var item in UpgradeManager.instance.specialityUpgradeInfo)
+                //     {
+                //         var obj = specialityPool.Get();
+                //         obj.ShowUI(item);
+                //     }
+                //     break;
         }
     }
 

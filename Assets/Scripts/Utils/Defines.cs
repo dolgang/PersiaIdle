@@ -129,6 +129,7 @@ namespace Defines
         Awaken,
         Speciality,
         Relic,
+        Ability
     }
 
     public enum ECalculatePositionType
