@@ -1,18 +1,25 @@
+﻿using Defines;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AbilityFixedInfo : MonoBehaviour
+[Serializable]
+[CreateAssetMenu(menuName = "SO/AbilityRerollInfo", fileName = "AbilityProbability")]
+public class AbilityFixedInfo : ScriptableObject
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public int abilityLevel;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    // 업글 관련
+    public EStatusType statusType;
+
+    [Header("ATK, HP, MP, MP_RECO, CRIT_DMG")]
+    public int modifyStatusInt;
+
+    [Header("DMG_REDU, CRIT_CH, ATK_SPD, ATK_RAN, MOV_SPD")]
+    public float modifyStatusFloat;
+
+    // 비용 관련
+    public ECurrencyType currencyType;
+    public int baseCost;
 }

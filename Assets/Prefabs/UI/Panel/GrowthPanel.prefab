@@ -1096,6 +1096,7 @@ MonoBehaviour:
   bottomToggles:
   - {fileID: 7026682757269842269}
   - {fileID: 4190054904736001703}
+  - {fileID: 6017308162622495761}
   bottomToggleGroup: {fileID: 3273310222374076123}
   statBarPrefab: {fileID: 5917395667172649364, guid: a56e911632faf4bd5a42935fcd783137, type: 3}
   statBarPoolSize: 5
@@ -1108,7 +1109,7 @@ MonoBehaviour:
   abilityBarPrefab: {fileID: 8588616143768910030, guid: 2dc2cad3d14a5f44e9aca65979d6ed47, type: 3}
   abilityPoolSize: 0
   abilityUis: []
-  abilityRoot: {fileID: 0}
+  abilityRoot: {fileID: 6436850564346493747}
   currencyUI: {fileID: 2220845470936733661}
   questGuide: {fileID: 1929708703255884534}
   attackQuestRoot: {fileID: 0}
@@ -1119,6 +1120,7 @@ MonoBehaviour:
   awakenCriticalDamageQuestRoot: {fileID: 0}
   awakenAttackSpeedQuestRoot: {fileID: 0}
   awakenSkillMultiplierQuestRoot: {fileID: 0}
+  abilityQuestRoot: {fileID: 0}
 --- !u!114 &6031821312134388369
 MonoBehaviour:
   m_ObjectHideFlags: 0

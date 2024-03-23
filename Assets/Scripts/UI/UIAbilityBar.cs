@@ -10,18 +10,14 @@ public class UIAbilityBar : UIBase
 {
     [SerializeField] private HoldCheckerButton upgradeBtn;
     
-    [SerializeField] private Image image;
-    
     [SerializeField] private Image costImage;
     
+    [SerializeField] private TMP_Text abilityLevelText;
     [SerializeField] private TMP_Text titleText;
-    [SerializeField] private TMP_Text maxLevelText;
-    [SerializeField] private TMP_Text levelText;
     [SerializeField] private TMP_Text costText;
-    [SerializeField] private TMP_Text upgradePerLevelText;
-    [SerializeField] private TMP_Text totalUpgrade;
+    [SerializeField] private TMP_Text modifyStatusText;
     
-    private StatUpgradeInfo upgradeInfo;
+    private AbilityInfo abilityInfo;
 
     [SerializeField] private RectTransform effectRect;
 
@@ -29,9 +25,9 @@ public class UIAbilityBar : UIBase
     {
         return upgradeBtn.transform;
     }
-    public void ShowUI(StatUpgradeInfo info)
+    public void ShowUI(AbilityInfo info)
     {
-        upgradeInfo = info;
+        abilityInfo = info;
         InitializeUI();
 
         CurrencyManager.instance.onCurrencyChanged += OnCurrencyUpdate;
@@ -46,9 +42,9 @@ public class UIAbilityBar : UIBase
 
     private void OnCurrencyUpdate(ECurrencyType type, string amount)
     {
-        if (type == upgradeInfo.currencyType)
+        if (type == abilityInfo.currencyType)
         {
-            if (upgradeInfo.CheckUpgradeCondition())
+            if (abilityInfo.CheckUpgradeCondition())
             {
                 // TODO 글씨 색 회색
                 upgradeBtn.interactable = true;
@@ -70,7 +66,7 @@ public class UIAbilityBar : UIBase
 
     private void InitializeBtn()
     {
-        upgradeBtn.onClick.AddListener(() => UpgradeBtn(upgradeInfo.statusType));
+        upgradeBtn.onClick.AddListener(() => UpgradeBtn(abilityInfo.statusType));
         upgradeBtn.onExit.AddListener(CurrencyManager.instance.SaveCurrencies);
     }
 
@@ -89,15 +85,15 @@ public class UIAbilityBar : UIBase
 
     private bool TryUpgrade(EStatusType type)
     {
-        if (CurrencyManager.instance.SubtractCurrency(upgradeInfo.currencyType, upgradeInfo.cost))
+        if (CurrencyManager.instance.SubtractCurrency(abilityInfo.currencyType, abilityInfo.cost))
         {
-            if (upgradeInfo.upgradePerLevelInt != 0)
-                UpgradeManager.instance.UpgradeBaseStatus(upgradeInfo);
+            if (abilityInfo.modifyStatusInt != 0)
+                UpgradeManager.instance.ModifyStatus(abilityInfo);
             else
-                UpgradeManager.instance.UpgradeBaseStatus(upgradeInfo);
+                UpgradeManager.instance.ModifyStatus(abilityInfo);
             
             // Show Effect
-            UIEffectManager.instance.ShowUpgradeEffect(image.transform);
+            UIEffectManager.instance.ShowUpgradeEffect(titleText.transform);
 
             return true;
         }
@@ -109,32 +105,28 @@ public class UIAbilityBar : UIBase
 
     private void UpdateUI()
     {
-        levelText.text = upgradeInfo.level.ToString();
+        titleText.text = abilityInfo.statusType.ToString();
         
-        if (upgradeInfo.upgradePerLevelInt != 0)
-            totalUpgrade.text = $"(+{upgradeInfo.upgradePerLevelInt * upgradeInfo.level})";
+        if (abilityInfo.modifyStatusInt != 0)
+            modifyStatusText.text = $"(+{abilityInfo.modifyStatusInt})";
         else
-            totalUpgrade.text = $"(+{(upgradeInfo.upgradePerLevelFloat * upgradeInfo.level * 100):F2}%)";
+            modifyStatusText.text = $"(+{(abilityInfo.modifyStatusFloat * 100):F2}%)";
 
-        costText.text = upgradeInfo.cost.ChangeToShort();
+        costText.text = abilityInfo.cost.ChangeToShort();
         
-        upgradeBtn.interactable = upgradeInfo.CheckUpgradeCondition();
+        upgradeBtn.interactable = abilityInfo.CheckUpgradeCondition();
     }
 
     private void InitializeUI()
     {
-        if (!ReferenceEquals(upgradeInfo.image,null))
-            image.sprite = upgradeInfo.image;
-
-        costImage.sprite = CurrencyManager.instance.GetIcon(upgradeInfo.currencyType);
+        costImage.sprite = CurrencyManager.instance.GetIcon(abilityInfo.currencyType);
        
-        if (upgradeInfo.upgradePerLevelInt != 0)
-            upgradePerLevelText.text = upgradeInfo.upgradePerLevelInt.ToString();
+        if (abilityInfo.modifyStatusInt != 0)
+            modifyStatusText.text = abilityInfo.modifyStatusInt.ToString();
         else
-            upgradePerLevelText.text = (upgradeInfo.upgradePerLevelFloat * 100).ToString("F2") + "%";
+            modifyStatusText.text = (abilityInfo.modifyStatusFloat * 100).ToString("F2") + "%";
 
-        titleText.text = upgradeInfo.title + " <color=#16FF00>+</color>";
-        maxLevelText.text = upgradeInfo.maxLevel.ToString();
+        titleText.text = abilityInfo.statusType.ToString();
         
         UpdateUI();
     }

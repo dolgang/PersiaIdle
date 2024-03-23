@@ -51,6 +51,7 @@ public class UIGrowthPanel : UIPanel
     [SerializeField] private Transform awakenCriticalDamageQuestRoot;
     [SerializeField] private Transform awakenAttackSpeedQuestRoot;
     [SerializeField] private Transform awakenSkillMultiplierQuestRoot;
+    [SerializeField] private Transform abilityQuestRoot;
 
     public override UIBase InitUI(UIBase parent)
     {
@@ -70,6 +71,8 @@ public class UIGrowthPanel : UIPanel
             x => x.actOnCallback += () => abilityPool.Release(x),
             x => x.transform.SetAsLastSibling(),
             null, abilityPoolSize, true);
+
+        Debug.Log(abilityPool.Size);
 
         currencyUI.InitUI(this);
         return this;
@@ -170,22 +173,12 @@ public class UIGrowthPanel : UIPanel
                     ui.SetActive(true);
                 }
 
-                foreach (var item in UpgradeManager.instance.awakenUpgradeInfo)
+                foreach (var item in UpgradeManager.instance.abilityInfo)
                 {
-                    var obj = awakenPool.Get();
+                    var obj = abilityPool.Get();
                     obj.ShowUI(item);
-                    if (item.statusType == EStatusType.ATK)
-                        awakenAttackQuestRoot = obj.GetButtonRect();
-                    else if (item.statusType == EStatusType.DMG_REDU)
-                        awakenDamageReductionQuestRoot = obj.GetButtonRect();
-                    else if (item.statusType == EStatusType.CRIT_CH)
-                        awakenCriticalChanceQuestRoot = obj.GetButtonRect();
-                    else if (item.statusType == EStatusType.CRIT_DMG)
-                        awakenCriticalDamageQuestRoot = obj.GetButtonRect();
-                    else if (item.statusType == EStatusType.ATK_SPD)
-                        awakenAttackSpeedQuestRoot = obj.GetButtonRect();
-                    else if (item.statusType == EStatusType.SKILL_DMG)
-                        awakenSkillMultiplierQuestRoot = obj.GetButtonRect();
+                    if (item.abilityLevel == 1)
+                        abilityQuestRoot = obj.GetButtonRect();
                 }
 
                 ControlUICurrency(ECurrencyType.Gold);
@@ -213,6 +206,9 @@ public class UIGrowthPanel : UIPanel
                 break;
             case ETrainingType.Awaken:
                 awakenPool.Clear();
+                break;
+            case ETrainingType.Ability:
+                abilityPool.Clear();
                 break;
             // case ETrainingType.Speciality:
             //     CloseTab(specialityOpenedUi, specialityUis, specialityPool);
