@@ -16,6 +16,7 @@ public class UpgradeManager : MonoBehaviour
 
     public event Action<EStatusType, int> onTrainingTypeAndCurrentLevel;
     public event Action<EStatusType, int> onAwakenUpgrade;
+    public event Action<EStatusType, int> onAbilityModify;
     public event Action<int> onBaseAttackUpgrade;
     public event Action<int> onBaseHealthUpgrade;
     public event Action<float> onBaseDamageReductionUpgrade;
@@ -35,6 +36,11 @@ public class UpgradeManager : MonoBehaviour
     public event Action<int> onAwakenCriticalDamage;
     public event Action<float> onAwakenAttackSpeed;
     public event Action<int> onAwakenSkillMultiplier;
+
+    public event Action<int> onAbilityAttack;
+    public event Action<int> onAbilityHealth;
+    public event Action<int> onAbilityCriticalDamage;
+    public event Action<int> onAbilitySkillMultiplier;
 
     [field: SerializeField] public StatUpgradeInfo[] statUpgradeInfo { get; protected set; }
 
@@ -63,6 +69,16 @@ public class UpgradeManager : MonoBehaviour
     public void InitAwaken(EStatusType type, float value)
     {
         PlayerManager.instance.status.ChangePercentStat(type, value);
+    }
+
+    public void InitAbility(EStatusType type, BigInteger value)
+    {
+        PlayerManager.instance.status.ChangeBaseStat(type, value);
+    }
+
+    public void InitAbility(EStatusType type, float value)
+    {
+        PlayerManager.instance.status.ChangeBaseStat(type, value);
     }
 
     public void UpgradeBaseStatus(StatUpgradeInfo info)
@@ -116,13 +132,15 @@ public class UpgradeManager : MonoBehaviour
 
     public void UpgradePercentStatus(AwakenUpgradeInfo info)
     {
+        // TODO 기존 어빌리티 스텟 빼는 로직 추가 필요
+
         var status = PlayerManager.instance.status;
         var score = new BigInteger(status.BattleScore.ToString());
         
         if (info.upgradePerLevelInt != 0)
-            PlayerManager.instance.status.ChangePercentStat(info.statusType, new BigInteger(info.upgradePerLevelInt));
+            PlayerManager.instance.status.ChangeBaseStat(info.statusType, new BigInteger(info.upgradePerLevelInt));
         else
-            PlayerManager.instance.status.ChangePercentStat(info.statusType, info.upgradePerLevelFloat);
+            PlayerManager.instance.status.ChangeBaseStat(info.statusType, info.upgradePerLevelFloat);
         
         switch (info.statusType)
         {
@@ -173,6 +191,38 @@ public class UpgradeManager : MonoBehaviour
         {
             // TODO float 관련 로직 추가 필요
         }
+
+        var status = PlayerManager.instance.status;
+        var score = new BigInteger(status.BattleScore.ToString());
+
+        if (info.modifyStatusInt != 0)
+            PlayerManager.instance.status.ChangePercentStat(info.statusType, new BigInteger(info.modifyStatusInt));
+        else
+            PlayerManager.instance.status.ChangePercentStat(info.statusType, info.modifyStatusFloat);
+
+        switch (info.statusType)
+        {
+            case EStatusType.ATK:
+                onAbilityAttack?.Invoke(info.modifyStatusInt);
+                break;
+            case EStatusType.HP:
+                onAbilityHealth?.Invoke(info.modifyStatusInt);
+                break;
+            case EStatusType.CRIT_DMG:
+                onAbilityCriticalDamage?.Invoke(info.modifyStatusInt);
+                break;
+            case EStatusType.SKILL_DMG:
+                onAbilitySkillMultiplier?.Invoke(info.modifyStatusInt);
+                break;
+        }
+
+        PlayerManager.instance.status.InitBattleScore();
+        MessageUIManager.instance.ShowPower(status.BattleScore, status.BattleScore - score);
+
+        info.ModifyStatus();
+
+        // 퀘스트랑 레드닷 체크용 같은데 어빌리티는 일단 보류
+        //onAbilityModify?.Invoke(info.statusType, info.level);
     }
 
     public void InitUpgradeManager()
@@ -398,27 +448,33 @@ public class AbilityInfo
 
     public AbilityFixedInfo FixedInfo => info;
 
-    public void LevelUp()
+    public void ModifyStatus()
     {
         Save();
     }
 
     public void Save()
     {
-        //DataManager.Instance.Save($"{nameof(StatUpgradeInfo)}_{statusType.ToString()}_{nameof(level)}", level);
-        DataManager.Instance.Save($"{nameof(AbilityInfo)}_{statusType.ToString()}_{nameof(cost)}", cost.ToString());
+        DataManager.Instance.Save($"{nameof(AbilityInfo)}_Lv.{abilityLevel}_{nameof(abilityGrade)}", abilityGrade);
+        DataManager.Instance.Save($"{nameof(AbilityInfo)}_Lv.{abilityLevel}_{nameof(statusType)}", statusType);
+        DataManager.Instance.Save($"{nameof(AbilityInfo)}_Lv.{abilityLevel}_{nameof(modifyStatusInt)}", modifyStatusInt);
+        DataManager.Instance.Save($"{nameof(AbilityInfo)}_Lv.{abilityLevel}_{nameof(modifyStatusFloat)}", modifyStatusFloat);
+        DataManager.Instance.Save($"{nameof(AbilityInfo)}_Lv.{abilityLevel}_{nameof(cost)}", cost.ToString());
     }
 
     public void Load()
     {
-        //level = DataManager.Instance.Load($"{nameof(StatUpgradeInfo)}_{statusType.ToString()}_{nameof(level)}", level);
+        abilityGrade = DataManager.Instance.Load($"{nameof(AbilityInfo)}_Lv.{abilityLevel}_{nameof(abilityGrade)}", abilityGrade);
+        statusType = DataManager.Instance.Load($"{nameof(AbilityInfo)}_Lv.{abilityLevel}_{nameof(statusType)}", statusType);
+        modifyStatusInt = DataManager.Instance.Load($"{nameof(AbilityInfo)}_Lv.{abilityLevel}_{nameof(modifyStatusInt)}", modifyStatusInt);
+        modifyStatusFloat = DataManager.Instance.Load($"{nameof(AbilityInfo)}_Lv.{abilityLevel}_{nameof(modifyStatusFloat)}", modifyStatusFloat);
         cost = new BigInteger(DataManager.Instance.Load<string>(
-            $"{nameof(AbilityInfo)}_{statusType.ToString()}_{nameof(cost)}", baseCost.ToString()));
+            $"{nameof(AbilityInfo)}_Lv.{abilityLevel}_{nameof(cost)}", cost.ToString()));
 
-        //if (upgradePerLevelInt != 0)
-        //    UpgradeManager.instance.InitStatus(statusType, (new BigInteger(upgradePerLevelInt)) * level);
-        //else
-        //    UpgradeManager.instance.InitStatus(statusType, (upgradePerLevelFloat) * level);
+        if (modifyStatusInt != 0)
+            UpgradeManager.instance.InitAbility(statusType, (new BigInteger(modifyStatusInt)));
+        else if (modifyStatusFloat != 0)
+            UpgradeManager.instance.InitAbility(statusType, (modifyStatusFloat));
     }
 
     public bool CheckUpgradeCondition()
