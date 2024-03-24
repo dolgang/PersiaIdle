@@ -1,0 +1,128 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0c2c062cfee5674faef02110633ee68, type: 3}
+  m_Name: AbilityFixedInfo 1
+  m_EditorClassIdentifier: 
+  abilityLevel: 2
+  abilityStatusGrade:
+  - abilityRarity: 0
+    abilityStatusValues:
+    - statusType: 0
+      minModifyStatusInt: 1
+      maxModifyStatusInt: 20
+      minModifyStatusFloat: 0
+      manModifyStatusFloat: 0
+    - statusType: 1
+      minModifyStatusInt: 11
+      maxModifyStatusInt: 22
+      minModifyStatusFloat: 0
+      manModifyStatusFloat: 0
+    - statusType: 6
+      minModifyStatusInt: 1
+      maxModifyStatusInt: 10
+      minModifyStatusFloat: 0
+      manModifyStatusFloat: 0
+    - statusType: 9
+      minModifyStatusInt: 1
+      maxModifyStatusInt: 5
+      minModifyStatusFloat: 0
+      manModifyStatusFloat: 0
+  - abilityRarity: 1
+    abilityStatusValues:
+    - statusType: 0
+      minModifyStatusInt: 21
+      maxModifyStatusInt: 40
+      minModifyStatusFloat: 0
+      manModifyStatusFloat: 0
+    - statusType: 1
+      minModifyStatusInt: 23
+      maxModifyStatusInt: 44
+      minModifyStatusFloat: 0
+      manModifyStatusFloat: 0
+    - statusType: 6
+      minModifyStatusInt: 11
+      maxModifyStatusInt: 20
+      minModifyStatusFloat: 0
+      manModifyStatusFloat: 0
+    - statusType: 9
+      minModifyStatusInt: 6
+      maxModifyStatusInt: 10
+      minModifyStatusFloat: 0
+      manModifyStatusFloat: 0
+  - abilityRarity: 2
+    abilityStatusValues:
+    - statusType: 0
+      minModifyStatusInt: 41
+      maxModifyStatusInt: 60
+      minModifyStatusFloat: 0
+      manModifyStatusFloat: 0
+    - statusType: 1
+      minModifyStatusInt: 45
+      maxModifyStatusInt: 66
+      minModifyStatusFloat: 0
+      manModifyStatusFloat: 0
+    - statusType: 6
+      minModifyStatusInt: 21
+      maxModifyStatusInt: 30
+      minModifyStatusFloat: 0
+      manModifyStatusFloat: 0
+    - statusType: 9
+      minModifyStatusInt: 11
+      maxModifyStatusInt: 15
+      minModifyStatusFloat: 0
+      manModifyStatusFloat: 0
+  - abilityRarity: 3
+    abilityStatusValues:
+    - statusType: 0
+      minModifyStatusInt: 61
+      maxModifyStatusInt: 80
+      minModifyStatusFloat: 0
+      manModifyStatusFloat: 0
+    - statusType: 1
+      minModifyStatusInt: 67
+      maxModifyStatusInt: 88
+      minModifyStatusFloat: 0
+      manModifyStatusFloat: 0
+    - statusType: 6
+      minModifyStatusInt: 31
+      maxModifyStatusInt: 40
+      minModifyStatusFloat: 0
+      manModifyStatusFloat: 0
+    - statusType: 9
+      minModifyStatusInt: 16
+      maxModifyStatusInt: 20
+      minModifyStatusFloat: 0
+      manModifyStatusFloat: 0
+  - abilityRarity: 4
+    abilityStatusValues:
+    - statusType: 0
+      minModifyStatusInt: 81
+      maxModifyStatusInt: 100
+      minModifyStatusFloat: 0
+      manModifyStatusFloat: 0
+    - statusType: 1
+      minModifyStatusInt: 89
+      maxModifyStatusInt: 111
+      minModifyStatusFloat: 0
+      manModifyStatusFloat: 0
+    - statusType: 6
+      minModifyStatusInt: 41
+      maxModifyStatusInt: 50
+      minModifyStatusFloat: 0
+      manModifyStatusFloat: 0
+    - statusType: 9
+      minModifyStatusInt: 21
+      maxModifyStatusInt: 25
+      minModifyStatusFloat: 0
+      manModifyStatusFloat: 0
+  currencyType: 0
+  baseCost: 200000

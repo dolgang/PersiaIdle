@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0c2c062cfee5674faef02110633ee68, type: 3}
-  m_Name: AbilityFixedInfo 1
+  m_Script: {fileID: 11500000, guid: 685315dec1f36df4ab8e487cd9d87567, type: 3}
+  m_Name: AbilityProbability
   m_EditorClassIdentifier: 
-  abilityLevel: 2
-  statusType: 0
-  modifyStatusInt: 1
-  modifyStatusFloat: 0
-  currencyType: 0
-  baseCost: 20
+  eachWeight:
+  - rarityWeight: 40
+  - rarityWeight: 30
+  - rarityWeight: 20
+  - rarityWeight: 9
+  - rarityWeight: 1

@@ -99,6 +99,7 @@ MonoBehaviour:
   upgradeBtn: {fileID: 1516230798065558288}
   costImage: {fileID: 3300648952669847237}
   abilityLevelText: {fileID: 2745961280738769987}
+  gradeText: {fileID: 6161087139553501536}
   titleText: {fileID: 2815985456526903580}
   costText: {fileID: 6201329317595665106}
   modifyStatusText: {fileID: 1158188408215122502}

@@ -40,6 +40,7 @@ public class UpgradeManager : MonoBehaviour
 
     [field: SerializeField] public AwakenUpgradeInfo[] awakenUpgradeInfo { get; protected set; }
 
+    [field: SerializeField] public AbilityRerollProbability abilityProbability { get; protected set; }
     [field: SerializeField] public AbilityInfo[] abilityInfo { get; protected set; }
 
     // [field: SerializeField] public SpecialityUpgradeInfo[] specialityUpgradeInfo { get; protected set; }
@@ -155,7 +156,23 @@ public class UpgradeManager : MonoBehaviour
 
     public void ModifyStatus(AbilityInfo info)
     {
+        info.abilityGrade = abilityProbability.Reroll();
+        var statusGrade = info.FixedInfo.abilityStatusGrade[info.abilityGrade];
 
+        int ran = UnityEngine.Random.Range(0, statusGrade.abilityStatusValues.Count);
+
+        var statusInfo = statusGrade.abilityStatusValues[ran];
+
+        info.statusType = statusInfo.statusType;
+        if (statusInfo.minModifyStatusInt != 0 && statusInfo.maxModifyStatusInt != 0)
+        {
+            int valRan = UnityEngine.Random.Range(statusInfo.minModifyStatusInt, statusInfo.maxModifyStatusInt + 1);
+            info.modifyStatusInt = valRan;
+        }
+        else
+        {
+            // TODO float 관련 로직 추가 필요
+        }
     }
 
     public void InitUpgradeManager()
@@ -200,6 +217,11 @@ public class UpgradeManager : MonoBehaviour
         {
             upgradeInfo.Load();
         }
+
+        foreach (var upgradeInfo in abilityInfo)
+        {
+            upgradeInfo.Load();
+        }
     }
 
     public void SaveUpgradeInfo()
@@ -210,6 +232,11 @@ public class UpgradeManager : MonoBehaviour
         }
 
         foreach (var upgradeInfo in awakenUpgradeInfo)
+        {
+            upgradeInfo.Save();
+        }
+
+        foreach (var upgradeInfo in abilityInfo)
         {
             upgradeInfo.Save();
         }
@@ -355,12 +382,11 @@ public class AbilityInfo
 {
     public int abilityLevel => info.abilityLevel;
 
-    // 업글 관련
-    public EStatusType statusType => info.statusType;
-
-    public int modifyStatusInt => info.modifyStatusInt;
-
-    public float modifyStatusFloat => info.modifyStatusFloat;
+    // 실적용 스텟
+    public int abilityGrade;
+    public EStatusType statusType;
+    public int modifyStatusInt;
+    public float modifyStatusFloat;
 
     // 비용 관련
     public ECurrencyType currencyType => info.currencyType;
@@ -370,28 +396,30 @@ public class AbilityInfo
 
     [SerializeField] private AbilityFixedInfo info;
 
+    public AbilityFixedInfo FixedInfo => info;
+
     public void LevelUp()
     {
-        //Save();
+        Save();
     }
 
-    //public void Save()
-    //{
-    //    DataManager.Instance.Save($"{nameof(StatUpgradeInfo)}_{statusType.ToString()}_{nameof(level)}", level);
-    //    DataManager.Instance.Save($"{nameof(StatUpgradeInfo)}_{statusType.ToString()}_{nameof(cost)}", cost.ToString());
-    //}
+    public void Save()
+    {
+        //DataManager.Instance.Save($"{nameof(StatUpgradeInfo)}_{statusType.ToString()}_{nameof(level)}", level);
+        DataManager.Instance.Save($"{nameof(AbilityInfo)}_{statusType.ToString()}_{nameof(cost)}", cost.ToString());
+    }
 
-    //public void Load()
-    //{
-    //    level = DataManager.Instance.Load($"{nameof(StatUpgradeInfo)}_{statusType.ToString()}_{nameof(level)}", level);
-    //    cost = new BigInteger(DataManager.Instance.Load<string>(
-    //        $"{nameof(StatUpgradeInfo)}_{statusType.ToString()}_{nameof(cost)}", baseCost.ToString()));
+    public void Load()
+    {
+        //level = DataManager.Instance.Load($"{nameof(StatUpgradeInfo)}_{statusType.ToString()}_{nameof(level)}", level);
+        cost = new BigInteger(DataManager.Instance.Load<string>(
+            $"{nameof(AbilityInfo)}_{statusType.ToString()}_{nameof(cost)}", baseCost.ToString()));
 
-    //    if (upgradePerLevelInt != 0)
-    //        UpgradeManager.instance.InitStatus(statusType, (new BigInteger(upgradePerLevelInt)) * level);
-    //    else
-    //        UpgradeManager.instance.InitStatus(statusType, (upgradePerLevelFloat) * level);
-    //}
+        //if (upgradePerLevelInt != 0)
+        //    UpgradeManager.instance.InitStatus(statusType, (new BigInteger(upgradePerLevelInt)) * level);
+        //else
+        //    UpgradeManager.instance.InitStatus(statusType, (upgradePerLevelFloat) * level);
+    }
 
     public bool CheckUpgradeCondition()
     {
