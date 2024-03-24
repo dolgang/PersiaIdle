@@ -22,8 +22,28 @@ public class AbilityRerollProbability : ScriptableObject
         InitWeight();
 
         var ran = UnityEngine.Random.Range(1, totalWeight + 1);
+        int grade = GetRarity(ran);
 
-        return ran;
+        return grade;
+    }
+
+    protected virtual int GetRarity(int ran)
+    {
+        int current = 0;
+        int rarity = 0;
+        foreach (var perRarityLevel in eachWeight)
+        {
+            current += perRarityLevel.rarityWeight;
+            if (ran <= current)
+            {
+                return rarity;
+            }
+            rarity++;
+        }
+
+        // 그럴 일은 없겠지만 끝까지 간 경우에 대한 예외처리
+        Debug.Assert(false, "확률이 이상합니다.");
+        return eachWeight.Length - 1;
     }
 
     public virtual void InitWeight()

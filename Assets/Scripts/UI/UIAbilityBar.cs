@@ -13,6 +13,7 @@ public class UIAbilityBar : UIBase
     [SerializeField] private Image costImage;
     
     [SerializeField] private TMP_Text abilityLevelText;
+    [SerializeField] private TMP_Text gradeText;
     [SerializeField] private TMP_Text titleText;
     [SerializeField] private TMP_Text costText;
     [SerializeField] private TMP_Text modifyStatusText;
@@ -112,6 +113,25 @@ public class UIAbilityBar : UIBase
         else
             modifyStatusText.text = $"(+{(abilityInfo.modifyStatusFloat * 100):F2}%)";
 
+        switch(abilityInfo.abilityGrade)
+        {
+            case 0: 
+                gradeText.text = "[C]";
+                gradeText.color = Color.white; break;
+            case 1:
+                gradeText.text = "[B]";
+                gradeText.color = Color.blue; break;
+            case 2:
+                gradeText.text = "[A]";
+                gradeText.color = Color.green; break;
+            case 3:
+                gradeText.text = "[S]";
+                gradeText.color = Color.red; break;
+            case 4:
+                gradeText.text = "[SS]";
+                gradeText.color = new Color(233f / 255f, 0f / 255f, 255f / 255f);
+                break;
+        }
         abilityLevelText.text = abilityInfo.abilityLevel.ToString();
         costText.text = abilityInfo.cost.ChangeToShort();
         
