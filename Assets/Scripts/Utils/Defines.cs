@@ -127,8 +127,9 @@ namespace Defines
     {
         Normal,
         Awaken,
+        Ability,
         Speciality,
-        Relic,
+        Relic
     }
 
     public enum ECalculatePositionType

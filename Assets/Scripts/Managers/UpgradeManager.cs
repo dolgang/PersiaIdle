@@ -40,6 +40,8 @@ public class UpgradeManager : MonoBehaviour
 
     [field: SerializeField] public AwakenUpgradeInfo[] awakenUpgradeInfo { get; protected set; }
 
+    [field: SerializeField] public AbilityInfo[] abilityInfo { get; protected set; }
+
     // [field: SerializeField] public SpecialityUpgradeInfo[] specialityUpgradeInfo { get; protected set; }
     // [field: SerializeField] public RelicUpgradeInfo[] relicUpgradeInfo { get; protected set; }
     public void InitStatus(EStatusType type, BigInteger value)
@@ -151,6 +153,11 @@ public class UpgradeManager : MonoBehaviour
         onAwakenUpgrade?.Invoke(info.statusType, info.level);
     }
 
+    public void ModifyStatus(AbilityInfo info)
+    {
+
+    }
+
     public void InitUpgradeManager()
     {
         // TODO Save & Load Upgrade Information
@@ -172,6 +179,11 @@ public class UpgradeManager : MonoBehaviour
         }
 
         foreach (var upgradeInfo in awakenUpgradeInfo)
+        {
+            upgradeInfo.Init();
+        }
+
+        foreach (var upgradeInfo in abilityInfo)
         {
             upgradeInfo.Init();
         }
@@ -334,6 +346,62 @@ public class StatUpgradeInfo
     public void Init()
     {
         level = 0;
+        cost = baseCost;
+    }
+}
+
+[Serializable]
+public class AbilityInfo
+{
+    public int abilityLevel => info.abilityLevel;
+
+    // 업글 관련
+    public EStatusType statusType => info.statusType;
+
+    public int modifyStatusInt => info.modifyStatusInt;
+
+    public float modifyStatusFloat => info.modifyStatusFloat;
+
+    // 비용 관련
+    public ECurrencyType currencyType => info.currencyType;
+    public int baseCost => info.baseCost;
+
+    public BigInteger cost;
+
+    [SerializeField] private AbilityFixedInfo info;
+
+    public void LevelUp()
+    {
+        //Save();
+    }
+
+    //public void Save()
+    //{
+    //    DataManager.Instance.Save($"{nameof(StatUpgradeInfo)}_{statusType.ToString()}_{nameof(level)}", level);
+    //    DataManager.Instance.Save($"{nameof(StatUpgradeInfo)}_{statusType.ToString()}_{nameof(cost)}", cost.ToString());
+    //}
+
+    //public void Load()
+    //{
+    //    level = DataManager.Instance.Load($"{nameof(StatUpgradeInfo)}_{statusType.ToString()}_{nameof(level)}", level);
+    //    cost = new BigInteger(DataManager.Instance.Load<string>(
+    //        $"{nameof(StatUpgradeInfo)}_{statusType.ToString()}_{nameof(cost)}", baseCost.ToString()));
+
+    //    if (upgradePerLevelInt != 0)
+    //        UpgradeManager.instance.InitStatus(statusType, (new BigInteger(upgradePerLevelInt)) * level);
+    //    else
+    //        UpgradeManager.instance.InitStatus(statusType, (upgradePerLevelFloat) * level);
+    //}
+
+    public bool CheckUpgradeCondition()
+    {
+        if (cost > CurrencyManager.instance.GetCurrency(currencyType))
+            return false;
+        return true;
+    }
+
+    public void Init()
+    {
         cost = baseCost;
     }
 }
