@@ -289,3 +289,13 @@ public enum ERarity
     None
     // 기타 희귀도...
 }
+
+public enum EAbilityRarity
+{
+    Lowest,
+    Low,
+    Middle,
+    High,
+    Highest,
+    None
+}

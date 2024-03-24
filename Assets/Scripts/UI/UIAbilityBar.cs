@@ -66,14 +66,14 @@ public class UIAbilityBar : UIBase
 
     private void InitializeBtn()
     {
-        upgradeBtn.onClick.AddListener(() => UpgradeBtn(abilityInfo.statusType));
+        upgradeBtn.onClick.AddListener(() => UpgradeBtn());
         upgradeBtn.onExit.AddListener(CurrencyManager.instance.SaveCurrencies);
     }
 
-    private void UpgradeBtn(EStatusType type)
+    private void UpgradeBtn()
     {
         // TODO currency manager를 통해서 돈 빼기!
-        if (TryUpgrade(type))
+        if (TryReroll())
         {
             UpdateUI();
         }
@@ -83,7 +83,7 @@ public class UIAbilityBar : UIBase
         }
     }
 
-    private bool TryUpgrade(EStatusType type)
+    private bool TryReroll()
     {
         if (CurrencyManager.instance.SubtractCurrency(abilityInfo.currencyType, abilityInfo.cost))
         {
@@ -112,6 +112,7 @@ public class UIAbilityBar : UIBase
         else
             modifyStatusText.text = $"(+{(abilityInfo.modifyStatusFloat * 100):F2}%)";
 
+        abilityLevelText.text = abilityInfo.abilityLevel.ToString();
         costText.text = abilityInfo.cost.ChangeToShort();
         
         upgradeBtn.interactable = abilityInfo.CheckUpgradeCondition();
