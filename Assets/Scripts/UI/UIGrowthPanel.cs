@@ -72,8 +72,6 @@ public class UIGrowthPanel : UIPanel
             x => x.transform.SetAsLastSibling(),
             null, abilityPoolSize, true);
 
-        Debug.Log(abilityPool.Size);
-
         currencyUI.InitUI(this);
         return this;
     }

@@ -76,24 +76,6 @@ MonoBehaviour:
     info: {fileID: 11400000, guid: 1564e1e462c8b47fb9e4dec7f282df76, type: 2}
   - level: 0
     info: {fileID: 11400000, guid: eef363001684d42149cfc210e2dd7af6, type: 2}
-  <abilityRerollInfos>k__BackingField:
-  - level: 0
-    info: {fileID: 0}
-  - level: 0
-    info: {fileID: 0}
-  - level: 0
-    info: {fileID: 0}
-  - level: 0
-    info: {fileID: 0}
-  - level: 0
-    info: {fileID: 0}
-  - level: 0
-    info: {fileID: 0}
-  - level: 0
-    info: {fileID: 0}
-  - level: 0
-    info: {fileID: 0}
-  - level: 0
-    info: {fileID: 0}
-  - level: 0
-    info: {fileID: 0}
+  <abilityInfo>k__BackingField:
+  - info: {fileID: 11400000, guid: 26f3c372adf853f44881e5fda47ce197, type: 2}
+  - info: {fileID: 11400000, guid: 50c2f0f143773c945825873b3a027b74, type: 2}
