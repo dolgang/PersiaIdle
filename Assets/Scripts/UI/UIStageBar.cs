@@ -38,6 +38,7 @@ public class UIStageBar : UIBase
     [Header("Quest")]
     [SerializeField] private Transform questGuide;
     [SerializeField] private Transform stageQuestRoot;
+    [SerializeField] private Transform autoBossQuestRoot;
 
     protected void Awake()
     {
@@ -162,6 +163,12 @@ public class UIStageBar : UIBase
         {
             case EAchievementType.ClearStageLevel:
                 questGuide.SetParent(stageQuestRoot);
+                questGuide.localPosition = Vector3.zero;
+                questGuide.gameObject.SetActive(true);
+                QuestManager.instance.currentQuest.onComplete += x => questGuide.gameObject.SetActive(false);
+                break;
+            case EAchievementType.ToggleAutoBoss:
+                questGuide.SetParent(autoBossQuestRoot);
                 questGuide.localPosition = Vector3.zero;
                 questGuide.gameObject.SetActive(true);
                 QuestManager.instance.currentQuest.onComplete += x => questGuide.gameObject.SetActive(false);

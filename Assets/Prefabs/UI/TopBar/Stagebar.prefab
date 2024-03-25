@@ -3059,6 +3059,7 @@ MonoBehaviour:
   downSlider: {fileID: 8663458339549414349}
   questGuide: {fileID: 4297315202990170397}
   stageQuestRoot: {fileID: 8279626649776217074}
+  autoBossQuestRoot: {fileID: 8933043337207087328}
 --- !u!1001 &4026377659440742851
 PrefabInstance:
   m_ObjectHideFlags: 0

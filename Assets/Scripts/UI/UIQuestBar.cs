@@ -146,6 +146,12 @@ public class UIQuestBar : UIBase
                 ui.ShowQuestRoot(type);
                 break;
             }
+            case EAchievementType.ToggleAutoBoss:
+            {
+                var ui = UIManager.instance.TryGetUI<UIStageBar>();
+                ui.ShowQuestRoot(type);
+                break;
+            }
             case EAchievementType.DestinyGem:
             case EAchievementType.TempestGem:
             case EAchievementType.LightningGem:
