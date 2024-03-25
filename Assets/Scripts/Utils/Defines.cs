@@ -201,6 +201,7 @@ public enum EAchievementType
     
     UseAutoSkill = 35,
     ClickQuestBar,
+    ToggleAutoBoss,
     
     LightningGem = 40,
     GuardianGem,

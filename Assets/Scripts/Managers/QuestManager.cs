@@ -344,6 +344,9 @@ public class QuestManager : MonoBehaviour
             case EAchievementType.ClickQuestBar:
                 UIManager.instance.TryGetUI<UIQuestBar>().clearBtn.onClick.RemoveListener(counter.CountOnce);
                 break;
+            case EAchievementType.ToggleAutoBoss:
+                UIManager.instance.TryGetUI<UIStageBar>().autoBossChallengeToggle.onValueChanged.RemoveListener(counter.CountOnce);
+                break;
             case EAchievementType.SkillLevelUp:
                 SkillManager.instance.onSkillLevelUpTotal -= counter.CountSetAs;
                 break;
@@ -460,6 +463,9 @@ public class QuestManager : MonoBehaviour
                 break;
             case EAchievementType.ClickQuestBar:
                 UIManager.instance.TryGetUI<UIQuestBar>().clearBtn.onClick.AddListener(counter.CountOnce);
+                break;
+            case EAchievementType.ToggleAutoBoss:
+                UIManager.instance.TryGetUI<UIStageBar>().autoBossChallengeToggle.onValueChanged.AddListener(counter.CountOnce);
                 break;
             case EAchievementType.SkillLevelUp:
                 SkillManager.instance.onSkillLevelUpTotal += counter.CountSetAs;
